@@ -21,8 +21,12 @@ class Admin extends Component {
 
     render() { 
         return (
-            <Grid>
-                <p>asda</p>
+            <Grid container style={{marginTop: "1.5rem"}}>
+                <Grid item xs={1} />
+                <Grid item xs={10}>
+                    This is admin panel
+                </Grid>
+                <Grid item xs={1} />
             </Grid>
         );
     }

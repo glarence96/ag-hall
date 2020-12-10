@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+//import 'react-day-picker/lib/style.css';
 import axios from 'axios';
 import Grid  from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
