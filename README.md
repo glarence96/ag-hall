@@ -1,5 +1,7 @@
 # Venue Booking App
 
+Do these after installing the dependencies
+
 ## In ag-hall/ directory
 
 ### `npm start`
