@@ -318,36 +318,57 @@ class AddDateRange extends Component {
     }
 
     onChangeName(e){
-        this.setState({
-            errors: {
-                name: 'example'
-            }
-        })
-        this.setState({
-            name : e.target.value
-        })
+        
+        if(!e.target.value.match(/^[a-zA-Z]+$/)) {
+            this.setState({
+                errors: {
+                    name: 'Only letters'
+                }
+            })
+        } else{
+            this.setState({
+                errors: {
+                    name: undefined
+                },
+                name: e.target.value
+            })
+        }
+
+
     }
     onChangePhone(e){
-        /*if(this.state.bookedPhoneArr.includes(e.target.value)){
-            alert('Phone number already taken');
-        } else{*/
-            this.setState({
-            phone : e.target.value
-            })
-        //}                
+        if(e.target.value.length <= 10){
+            if((!e.target.value.match(/^[6789]\d{9}$/) || e.target.value.length < 10)) {
+                this.setState({
+                    errors: {
+                        phone: 'Enter a valid 10 digit mobile number'
+                    }
+                })
+            } else{
+                this.setState({
+                    errors: {
+                        phone: undefined
+                    },
+                })
+            }
+            this.setState({ phone: e.target.value});
+        }                        
     }
     getDateArray(start, end) {
-        start.setUTCHours(0,0,0,0);
-        end.setUTCHours(0,0,0,0);
-        let arr = [];
-        let dt = new Date(start);
-        let toPush = '';
-        while (dt <= end) {
-            toPush = `${dt.getDate()}-${dt.getMonth()+1}-${dt.getFullYear()}`;
-            arr.push(toPush);
-            dt.setDate(dt.getDate() + 1);
+        if(start && end){
+            start.setUTCHours(0,0,0,0);
+            end.setUTCHours(0,0,0,0);
+            let arr = [];
+            let dt = new Date(start);
+            let toPush = '';
+            while (dt <= end) {
+                toPush = `${dt.getDate()}-${dt.getMonth()+1}-${dt.getFullYear()}`;
+                arr.push(toPush);
+                dt.setDate(dt.getDate() + 1);
+            }
+            return arr;
         }
-        return arr;
+        return [];
     }
     formatMoney(x){
         x=x.toString();
@@ -369,6 +390,18 @@ class AddDateRange extends Component {
 
     onSubmit(e){
         e.preventDefault();
+        if(this.state.errors.name || this.state.errors.phone){
+            alert('Form is invalid');
+            return null;
+        }
+        const {
+            startDate, endDate, name, phone
+          } = this.state;
+        if(!name || !phone || !startDate || !endDate){
+            alert('Form cannot be empty');
+            return null;
+        }        
+
         const datesArr=this.getDateArray(this.state.startDate, this.state.endDate);
         let error = false;
         datesArr.forEach(e => {
@@ -420,20 +453,24 @@ class AddDateRange extends Component {
                     <Grid item xs={3} />
                     <Grid item container xs={6}>
                     {!booked && <Paper className={classes.paper}>
-                        <TextField 
+                        <TextField
+                        required 
                         style={{marginTop: '1.5rem'}}
                         color="secondary" 
                         fullWidth
                         label="Name"
                         onChange={this.onChangeName} />
+                        <span style={{color: "red"}}>{this.state.errors.name}</span>
 
                         <TextField
+                        required
                         style={{marginTop: '0.5rem'}}
                         color="secondary" 
                         fullWidth
                         label="Phone"
                         value={phone}
                         onChange={this.onChangePhone} />
+                        <span style={{color: "red"}}>{this.state.errors.phone}</span>
 
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -452,6 +489,7 @@ class AddDateRange extends Component {
                             onChange={this.handleFromChange}
                             disablePast
                             shouldDisableDate={bookedDays}
+                            required
                         />
                         </MuiPickersUtilsProvider>
 
@@ -473,6 +511,7 @@ class AddDateRange extends Component {
                             minDate={startDate}
                             disablePast
                             shouldDisableDate={bookedDays}
+                            required
                         />
                         </MuiPickersUtilsProvider>
 
