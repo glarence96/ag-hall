@@ -5,6 +5,7 @@ import DateChecker from "./components/date-checker.components";
 import Navbar from "./components/navbar.component";
 import AddDateRange from "./components/add-date-range.component";
 import Admin from "./components/admin.component";
+import Home from "./components/home.component";
  
 function App() {
  return (
@@ -13,7 +14,8 @@ function App() {
       <Navbar /> 
       <Route path="/check" exact component={DateChecker} />
       <Route path="/add-range" exact component={AddDateRange} />
-      <Route path="/admin" exact component={Admin} />   
+      <Route path="/admin" exact component={Admin} />
+      <Route path="/" exact component={Home} />   
     </div>
    </Router>
 
