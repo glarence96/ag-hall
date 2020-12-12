@@ -1,4 +1,6 @@
 # Venue Booking App
+This is still an app in progress. 
+
 
 Do these after installing the dependencies
 
